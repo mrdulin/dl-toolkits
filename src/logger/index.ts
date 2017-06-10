@@ -29,13 +29,27 @@ const printfTemplateFunctions: { [key: string]: (info: TransformableInfo) => str
   },
   common(info: TransformableInfo): string {
     const { level: l, ...rest } = info;
-    let log: string;
+    let log: string = '';
     const loggerPrefix: string = createLoggerPrefix(info);
     if (rest.stack) {
       const { stack, ...others } = rest;
       log = `${loggerPrefix}: ${prettyJSON(others)}\n\n${stack}\n\n`;
-    } else {
+    } else if (_.isObject(rest.message)) {
       log = `${loggerPrefix}: ${prettyJSON(rest)}\n\n`;
+    } else if (_.isString(rest.message)) {
+      const keepFields = ['service', 'message', 'timestamp'];
+      const hasMeta = _.chain(rest)
+        .keys()
+        .some(key => {
+          return !_.includes(keepFields, key);
+        })
+        .value();
+
+      if (hasMeta) {
+        log = `${loggerPrefix}: ${prettyJSON(rest)}`;
+      } else {
+        log = `${loggerPrefix}: ${rest.message}`;
+      }
     }
     return log;
   }
@@ -85,10 +99,14 @@ function createWinstonLogger(options?: Partial<IWinstonLoggerOptions>): Logger {
       })
     ];
   }
+  let defaultMeta: any;
+  if (finalOptions.serviceName) {
+    defaultMeta = { service: finalOptions.serviceName };
+  }
 
   return winston.createLogger({
     level,
-    defaultMeta: { service: finalOptions.serviceName },
+    defaultMeta,
     transports
   });
 }

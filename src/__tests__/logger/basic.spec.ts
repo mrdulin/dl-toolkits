@@ -16,6 +16,12 @@ const user = {
 };
 
 describe('logger', () => {
+  it('#debug - simple string', () => {
+    logger.debug('Server is listening at http://localhost:3200');
+  });
+  it('#debug - simple string with second argument', () => {
+    logger.debug('create user successfully', { context: 'createUser' });
+  });
   it('#debug', () => {
     logger.debug(user, {
       context: 'UserService.findById',
