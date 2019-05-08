@@ -1,5 +1,5 @@
 {
-  "name": "DL-Toolkits",
+  "name": "dl-toolkits",
   "version": "1.0.0",
   "description": "Personal Toolkits",
   "main": "./dist/index.js",
