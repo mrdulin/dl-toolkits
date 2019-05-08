@@ -1,0 +1,54 @@
+{
+  "name": "DL-Toolkits",
+  "version": "1.0.0",
+  "description": "Personal Toolkits",
+  "main": "./dist/index.js",
+  "dependencies": {
+    "@google-cloud/logging-winston": "^0.11.1",
+    "lodash": "^4.17.11",
+    "pretty-data": "^0.40.0",
+    "winston": "^3.2.1"
+  },
+  "devDependencies": {
+    "@types/faker": "^4.1.5",
+    "@types/jest": "^24.0.12",
+    "@types/joi": "^14.3.3",
+    "@types/lodash": "^4.14.124",
+    "faker": "^4.1.0",
+    "jest": "^24.8.0",
+    "joi": "^14.3.1",
+    "ts-jest": "^24.0.2",
+    "ts-node": "^8.1.0",
+    "tslint": "^5.16.0",
+    "typescript": "^3.4.5"
+  },
+  "scripts": {
+    "test": "jest --detectOpenHandles",
+    "clean": "rm -rf ./dist",
+    "prebuild": "npm run clean",
+    "build": "tsc",
+    "lint": "tslint --config ./tslint.json --project ./tsconfig.json",
+    "prepare": "npm run lint && npm run build"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mrdulin/DL-Toolkits.git"
+  },
+  "keywords": [
+    "mrdulin",
+    "toolkits",
+    "logger"
+  ],
+  "engines": {
+    "node": ">=8.11.4"
+  },
+  "files": [
+    "dist"
+  ],
+  "author": "mrdulin <novaline.dulin@gmail.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/mrdulin/DL-Toolkits/issues"
+  },
+  "homepage": "https://github.com/mrdulin/DL-Toolkits#readme"
+}
