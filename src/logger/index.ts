@@ -70,7 +70,9 @@ function createWinstonLogger(options?: Partial<IWinstonLoggerOptions>): Logger {
       }
     });
     transports = [new winston.transports.Console(), loggingWinston];
-    level = 'error';
+    if (process.env.DEVELOPMENT_BUILD !== 'true') {
+      level = 'error';
+    }
   } else {
     transports = [
       new winston.transports.Console({
