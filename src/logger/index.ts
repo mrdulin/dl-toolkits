@@ -29,17 +29,14 @@ const printfTemplateFunctions: { [key: string]: (info: TransformableInfo) => str
   },
   common(info: TransformableInfo): string {
     const { level: l, ...rest } = info;
-    console.log(`info: ${JSON.stringify(info)}. message type: ${typeof info.message}`);
     let log: string = '';
     const loggerPrefix: string = createLoggerPrefix(info);
     if (rest.stack) {
       const { stack, ...others } = rest;
       log = `${loggerPrefix}: ${prettyJSON(others)}\n\n${stack}\n\n`;
     } else if (_.isPlainObject(rest.message)) {
-      console.log('message is object');
       log = `${loggerPrefix}: ${prettyJSON(rest)}\n\n`;
     } else if (_.isString(rest.message)) {
-      console.log('message is string');
       const keepFields = ['service', 'message', 'timestamp'];
       const hasMeta = _.chain(rest)
         .keys()
@@ -51,7 +48,6 @@ const printfTemplateFunctions: { [key: string]: (info: TransformableInfo) => str
       if (hasMeta) {
         log = `${loggerPrefix}: ${prettyJSON(rest)}`;
       } else {
-        console.log('=====');
         log = `${loggerPrefix}: ${rest.message}`;
       }
     }
@@ -83,11 +79,13 @@ function createWinstonLogger(options?: Partial<IWinstonLoggerOptions>): Logger {
   let level: string = 'debug';
   if (process.env.NODE_ENV === 'production') {
     const loggingWinston: Logger = new LoggingWinston({
+      keyFilename: process.env.KEY_FILE_NAME,
+      projectId: process.env.PROJECT_ID,
       serviceContext: {
         service: finalOptions.serviceName
       }
     });
-    loggingWinston.format = format.combine(format.timestamp(), format.errors({ stack: true }), prinfFormatProxy());
+    // loggingWinston.format = format.combine(format.timestamp(), format.errors({ stack: true }), prinfFormatProxy());
     transports = [new winston.transports.Console(), loggingWinston];
     if (process.env.DEVELOPMENT_BUILD !== 'true') {
       level = 'error';
@@ -130,16 +128,25 @@ interface ILogMethods {
   error: ILogMethod;
 }
 
+function preProcessMessage(message: any) {
+  if (process.env.NODE_ENV === 'production') {
+    if (_.isPlainObject(message)) {
+      return prettyJSON(message);
+    }
+  }
+  return message;
+}
+
 function createLogger(options?: Partial<IWinstonLoggerOptions>): ILogMethods {
   const winstonLogger = createWinstonLogger(options);
   function debug(message: any, meta?: Partial<ILoggerMeta>): Logger {
-    return winstonLogger.debug(message, meta);
+    return winstonLogger.debug(preProcessMessage(message), meta);
   }
   function info(message: any, meta?: Partial<ILoggerMeta>): Logger {
-    return winstonLogger.info(message, meta);
+    return winstonLogger.info(preProcessMessage(message), meta);
   }
   function error(message: any, meta?: Partial<ILoggerMeta>): Logger {
-    return winstonLogger.error(message, meta);
+    return winstonLogger.error(preProcessMessage(message), meta);
   }
 
   return {
