@@ -1,6 +1,6 @@
 {
   "name": "dl-toolkits",
-  "version": "1.0.7",
+  "version": "1.0.8",
   "description": "Personal Toolkits",
   "main": "./dist/index.js",
   "dependencies": {
