@@ -29,13 +29,13 @@ const printfTemplateFunctions: { [key: string]: (info: TransformableInfo) => str
   },
   common(info: TransformableInfo): string {
     const { level: l, ...rest } = info;
-    console.log(`info: ${JSON.stringify(info)}`);
+    console.log(`info: ${JSON.stringify(info)}. message type: ${typeof info.message}`);
     let log: string = '';
     const loggerPrefix: string = createLoggerPrefix(info);
     if (rest.stack) {
       const { stack, ...others } = rest;
       log = `${loggerPrefix}: ${prettyJSON(others)}\n\n${stack}\n\n`;
-    } else if (_.isObject(rest.message)) {
+    } else if (_.isPlainObject(rest.message)) {
       console.log('message is object');
       log = `${loggerPrefix}: ${prettyJSON(rest)}\n\n`;
     } else if (_.isString(rest.message)) {
@@ -87,7 +87,7 @@ function createWinstonLogger(options?: Partial<IWinstonLoggerOptions>): Logger {
         service: finalOptions.serviceName
       }
     });
-    loggingWinston.format = format.combine(format.errors({ stack: true }), prinfFormatProxy());
+    loggingWinston.format = format.combine(format.timestamp(), format.errors({ stack: true }), prinfFormatProxy());
     transports = [new winston.transports.Console(), loggingWinston];
     if (process.env.DEVELOPMENT_BUILD !== 'true') {
       level = 'error';
