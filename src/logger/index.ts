@@ -36,8 +36,10 @@ const printfTemplateFunctions: { [key: string]: (info: TransformableInfo) => str
       const { stack, ...others } = rest;
       log = `${loggerPrefix}: ${prettyJSON(others)}\n\n${stack}\n\n`;
     } else if (_.isObject(rest.message)) {
+      console.log('message is object');
       log = `${loggerPrefix}: ${prettyJSON(rest)}\n\n`;
     } else if (_.isString(rest.message)) {
+      console.log('message is string');
       const keepFields = ['service', 'message', 'timestamp'];
       const hasMeta = _.chain(rest)
         .keys()
@@ -49,6 +51,7 @@ const printfTemplateFunctions: { [key: string]: (info: TransformableInfo) => str
       if (hasMeta) {
         log = `${loggerPrefix}: ${prettyJSON(rest)}`;
       } else {
+        console.log('=====');
         log = `${loggerPrefix}: ${rest.message}`;
       }
     }
