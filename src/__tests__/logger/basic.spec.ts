@@ -40,6 +40,11 @@ describe('logger', () => {
     });
   });
 
+  it('#debug - object.assign', () => {
+    const aLog = Object.assign({}, { name: faker.name.findName() });
+    logger.debug(aLog, { context: 'object.assign' });
+  });
+
   it('#info', () => {
     logger.info(user, {
       context: 'UserService.findById',

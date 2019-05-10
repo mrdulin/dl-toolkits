@@ -83,7 +83,10 @@ function createWinstonLogger(options?: Partial<IWinstonLoggerOptions>): Logger {
         service: finalOptions.serviceName
       }
     });
-    transports = [new winston.transports.Console(), loggingWinston];
+    transports = [
+      new winston.transports.Console({ format: format.combine(format.errors({ stack: true }), prinfFormatProxy()) }),
+      loggingWinston
+    ];
     if (process.env.DEVELOPMENT_BUILD !== 'true') {
       level = 'error';
     }
