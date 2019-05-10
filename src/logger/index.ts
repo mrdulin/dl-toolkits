@@ -1,5 +1,5 @@
 import _ from 'lodash';
-import winston, { format, Logger } from 'winston';
+import winston, { format, Logger, loggers } from 'winston';
 import Transport from 'winston-transport';
 import { LoggingWinston } from '@google-cloud/logging-winston';
 import { TransformableInfo, Format } from 'logform';
@@ -83,10 +83,8 @@ function createWinstonLogger(options?: Partial<IWinstonLoggerOptions>): Logger {
         service: finalOptions.serviceName
       }
     });
-    transports = [
-      new winston.transports.Console({ format: format.combine(format.errors({ stack: true }), prinfFormatProxy()) }),
-      loggingWinston
-    ];
+    loggingWinston.format = format.combine(format.errors({ stack: true }), prinfFormatProxy());
+    transports = [new winston.transports.Console(), loggingWinston];
     if (process.env.DEVELOPMENT_BUILD !== 'true') {
       level = 'error';
     }
