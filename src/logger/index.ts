@@ -29,6 +29,7 @@ const printfTemplateFunctions: { [key: string]: (info: TransformableInfo) => str
   },
   common(info: TransformableInfo): string {
     const { level: l, ...rest } = info;
+    console.log(`info: ${JSON.stringify(info)}`);
     let log: string = '';
     const loggerPrefix: string = createLoggerPrefix(info);
     if (rest.stack) {
