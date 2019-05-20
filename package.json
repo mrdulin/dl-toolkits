@@ -6,7 +6,7 @@
   "dependencies": {
     "@google-cloud/logging-winston": "^0.11.1",
     "lodash": "^4.17.11",
-    "pretty-data": "^0.40.0",
+    "moment": "^2.24.0",
     "winston": "^3.2.1"
   },
   "devDependencies": {

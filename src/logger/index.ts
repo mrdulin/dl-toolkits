@@ -1,5 +1,6 @@
 import _ from 'lodash';
-import winston, { format, Logger, loggers } from 'winston';
+import moment from 'moment';
+import winston, { format, Logger } from 'winston';
 import Transport from 'winston-transport';
 import { LoggingWinston } from '@google-cloud/logging-winston';
 import { TransformableInfo, Format } from 'logform';
@@ -95,7 +96,7 @@ function createWinstonLogger(options?: Partial<IWinstonLoggerOptions>): Logger {
       new winston.transports.Console({
         format: format.combine(
           format.colorize(),
-          format.timestamp(),
+          format.timestamp({ format: moment().format() }),
           format.errors({ stack: true }),
           prinfFormatProxy()
         )
