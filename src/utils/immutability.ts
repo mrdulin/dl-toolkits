@@ -1,4 +1,4 @@
-import * as update from 'immutability-helper';
+import update from 'immutability-helper';
 
 interface IBook {
   name: string;
@@ -61,7 +61,7 @@ function bookReducer(state: IBookState = initialState, action?: IAction<IUpdateB
           books: {
             $updateObjFieldFromArrayById: { id: action.payload.id, key: 'sellout', value: action.payload.sellout }
           }
-        });
+        } as any);
         return nState;
       default:
         return state;
@@ -71,16 +71,16 @@ function bookReducer(state: IBookState = initialState, action?: IAction<IUpdateB
   }
 }
 
-update.extend<IBook[]>('$updateObjFieldFromArrayById', function handler(param, old: IBook[]): IBook[] {
-  return old.map(
-    (book: IBook): IBook => {
-      if (book.id === param.id) {
-        return update(book, { $merge: { [param.key]: param.value } });
-      }
-      return book;
-    }
-  );
-});
+// update.extend<IBook[]>('$updateObjFieldFromArrayById', function handler(param, old: IBook[]): IBook[] {
+//   return old.map(
+//     (book: IBook): IBook => {
+//       if (book.id === param.id) {
+//         return update(book, { $merge: { [param.key]: param.value } });
+//       }
+//       return book;
+//     }
+//   );
+// });
 
 export {
   bookReducer,
