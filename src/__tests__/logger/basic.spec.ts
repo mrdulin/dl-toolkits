@@ -45,6 +45,11 @@ describe('logger', () => {
     logger.debug(aLog, { context: 'object.assign' });
   });
 
+  it('#debug - object array', () => {
+    const aLog = [{ name: faker.name.findName() }, { name: faker.name.findName() }];
+    logger.debug(aLog, { context: 'object array' });
+  });
+
   it('#info', () => {
     logger.info(user, {
       context: 'UserService.findById',

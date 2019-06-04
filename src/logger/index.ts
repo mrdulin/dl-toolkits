@@ -35,7 +35,7 @@ const printfTemplateFunctions: { [key: string]: (info: TransformableInfo) => str
     if (rest.stack) {
       const { stack, ...others } = rest;
       log = `${loggerPrefix}: ${prettyJSON(others)}\n\n${stack}\n\n`;
-    } else if (_.isPlainObject(rest.message)) {
+    } else if (_.isPlainObject(rest.message) || _.isArray(rest.message)) {
       log = `${loggerPrefix}: ${prettyJSON(rest)}\n\n`;
     } else if (_.isString(rest.message)) {
       const keepFields = ['service', 'message', 'timestamp'];
