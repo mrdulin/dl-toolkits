@@ -8,6 +8,8 @@ import {
   insertElementToArrayByIndex,
   insertArray,
   elementCount,
+  quickSort,
+  findFirstSameElement,
 } from '../../utils/array';
 
 describe('array', () => {
@@ -186,17 +188,26 @@ describe('array', () => {
   describe('#elementCount', () => {
     it('should return correct count for each number element in array', () => {
       const numArray = [2, 2, 3, 6, 7, 7, 7, 7, 8, 9];
-
-      const expected = {
-        2: 2,
-        3: 1,
-        6: 1,
-        7: 4,
-        8: 1,
-        9: 1,
-      };
-
+      const expected = { 2: 2, 3: 1, 6: 1, 7: 4, 8: 1, 9: 1 };
       expect(elementCount(numArray)).toEqual(expected);
+    });
+  });
+
+  describe('#quickSort', () => {
+    it('should quick sort number of array asc', () => {
+      const arr = [1, 5, 7, 23, 656, 23, 567, 231, 2, 23];
+      const result = quickSort(arr);
+      expect(result).toBeInstanceOf(Array);
+      expect(result).toEqual([1, 2, 5, 7, 23, 23, 23, 231, 567, 656]);
+    });
+  });
+
+  describe('#findFirstSameElement', () => {
+    it('should be return first element between two arrays with simple data type', () => {
+      const a = [1, 2, 3, 3, 4];
+      const b = [3, 4, 5];
+      const actual = findFirstSameElement(a, b);
+      expect(actual).toEqual(3);
     });
   });
 });

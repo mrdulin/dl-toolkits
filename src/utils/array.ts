@@ -90,4 +90,58 @@ function elementCount(arr: any[]): { [key: string]: number } {
   return countObj;
 }
 
-export { diff, diff2, removeDup, maxVal, maxVal2, swap, insertElementToArrayByIndex, insertArray, elementCount };
+function quickSort(arr: number[]) {
+  if (arr.length <= 1) {
+    return arr;
+  }
+  const baseIndex = Math.floor(arr.length / 2);
+  const baseValue = arr.splice(baseIndex, 1)[0];
+  const left: number[] = [];
+  const right: number[] = [];
+  const len = arr.length;
+
+  for (let i = 0; i < len; i += 1) {
+    const el = arr[i];
+    if (el < baseValue) {
+      left.push(el);
+    } else {
+      right.push(el);
+    }
+  }
+
+  return quickSort(left).concat([baseValue], quickSort(right));
+}
+
+/**
+ *
+ * 找到两个数组第一个相同的元素
+ * @author dulin
+ * @param {BaseType[]} a
+ * @param {BaseType[]} b
+ * @returns {BaseType}
+ */
+function findFirstSameElement(a: BaseType[], b: BaseType[]): BaseType {
+  let el: BaseType;
+  for (const v of a) {
+    const idx = b.indexOf(v);
+    if (idx !== -1) {
+      el = v;
+      break;
+    }
+  }
+  return el;
+}
+
+export {
+  diff,
+  diff2,
+  removeDup,
+  maxVal,
+  maxVal2,
+  swap,
+  insertElementToArrayByIndex,
+  insertArray,
+  elementCount,
+  quickSort,
+  findFirstSameElement,
+};
