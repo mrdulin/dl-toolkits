@@ -3,4 +3,8 @@ function objToMap(obj: object) {
   return new Map(entries);
 }
 
-export { objToMap };
+function shallowClone(map: Map<any, any>) {
+  return new Map(map);
+}
+
+export { objToMap, shallowClone };

@@ -12,7 +12,7 @@ function diff2(a1: BaseType[], a2: BaseType[]): BaseType[] {
 
 function removeDup(arr: BaseType[]): BaseType[] {
   return arr.filter((v, i, src) => {
-    if (typeof v === "number" && Number.isNaN(v)) {
+    if (typeof v === 'number' && Number.isNaN(v)) {
       return src.findIndex((u) => Number.isNaN(u as number)) === i;
     }
     return src.indexOf(v) === i;
@@ -39,11 +39,7 @@ function clone(arr: any[]) {
   return arr.slice();
 }
 
-function insertElementToArrayByIndex(
-  src: BaseType[],
-  dest: BaseType[],
-  rules: number[]
-) {
+function insertElementToArrayByIndex(src: BaseType[], dest: BaseType[], rules: number[]) {
   // TODO 参数校验
   if (!src.length || !dest.length || !rules || !rules.length) {
     return src.concat(dest);
@@ -73,24 +69,25 @@ function insertElementToArrayByIndex(
   }, [] as BaseType[]);
 }
 
-function insertArray(
-  src: any[],
-  dest: any[],
-  idx: number,
-  deleteCount: number
-) {
+function insertArray(src: any[], dest: any[], idx: number, deleteCount: number) {
   const cSrc = src.slice();
   cSrc.splice(idx, deleteCount, ...dest);
   return cSrc;
 }
 
-export {
-  diff,
-  diff2,
-  removeDup,
-  maxVal,
-  maxVal2,
-  swap,
-  insertElementToArrayByIndex,
-  insertArray,
-};
+function elementCount(arr: any[]): { [key: string]: number } {
+  const countObj = {};
+  arr.forEach((element) => {
+    if (countObj[element]) {
+      let num = countObj[element];
+      num += 1;
+      countObj[element] = num;
+    } else {
+      countObj[element] = 1;
+    }
+  });
+
+  return countObj;
+}
+
+export { diff, diff2, removeDup, maxVal, maxVal2, swap, insertElementToArrayByIndex, insertArray, elementCount };
