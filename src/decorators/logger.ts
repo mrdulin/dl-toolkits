@@ -1,7 +1,7 @@
 /**
  * Created by dulin on 2017/7/10.
  */
-import { DecoratorFunction } from '../../types';
+import { DecoratorFunction } from '../types';
 
 type LogMode = 'args' | 'count';
 

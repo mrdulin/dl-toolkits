@@ -1,4 +1,4 @@
-import { DecoratorFunction } from '../../types';
+import { DecoratorFunction } from '../types';
 
 function decoratorFactory(...parameters: string[]): DecoratorFunction<PropertyDescriptor> {
   return function nonFalsy(target: any, propertyKey: string, descriptor: PropertyDescriptor): PropertyDescriptor {

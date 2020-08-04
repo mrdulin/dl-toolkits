@@ -6,7 +6,7 @@ function memorize(target, propertyKey, descriptor) {
   let result;
   let shouldExecute = true;
 
-  descriptor.value = function(...args) {
+  descriptor.value = function (...args) {
     shouldExecute = !isEqual(args, prevArgs);
     if (shouldExecute) {
       result = originalMethod.apply(this, args);
