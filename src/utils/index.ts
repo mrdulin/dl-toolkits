@@ -2,3 +2,8 @@ export * from './enum';
 export * from './json';
 export * from './array';
 export * from './map';
+export * from './date';
+export * from './func';
+export * from './immutability';
+export * from './obj';
+export * from './promise';
