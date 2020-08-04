@@ -32,4 +32,4 @@ function curry(fn: AnyFunc): AnyFunc {
   };
 }
 
-export { partial, curry, sequence };
+export { partial, curry };

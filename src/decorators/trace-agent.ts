@@ -3,7 +3,7 @@ function traceDecoratorFactory(options?: { name: string }) {
   const tracer = require('@google-cloud/trace-agent').get();
   return (target: any, propertyKey: string, descriptor: TypedPropertyDescriptor<any>) => {
     const orignalFunction = descriptor.value;
-    descriptor.value = async function (...args: any[]) {
+    descriptor.value = async function inner(...args: any[]) {
       const spanName = (options ? options.name : '') || orignalFunction.name || propertyKey;
       const childSpan = tracer.createChildSpan({ name: spanName });
       childSpan.addLabel('class', target.name);

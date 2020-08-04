@@ -4,7 +4,7 @@ function consoleTime(options?: { name: string }) {
   return (target: any, propertyKey: string, descriptor: TypedPropertyDescriptor<any>) => {
     const oFunc = descriptor.value;
     const name = (options ? options.name : '') || oFunc.name || propertyKey;
-    descriptor.value = async function (...args: any[]) {
+    descriptor.value = async function inner(...args: any[]) {
       const uuid = uuidv1();
       const label = `${name}_${uuid}`;
       console.time(label);

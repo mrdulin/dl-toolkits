@@ -26,7 +26,7 @@ function log(opt: ILogOpt): DecoratorFunction<PropertyDescriptor> {
 
     // 不要使用箭头函数，否则originalMethod中this的指向将发生变化
     // https://stackoverflow.com/questions/29775830/how-to-implement-a-typescript-decorator
-    descriptor.value = function (...args: any[]): any {
+    descriptor.value = function inner(...args: any[]): any {
       // -- 打点 --
       const data: IkeyOfObject = opt.data;
       let delay: number = 0;

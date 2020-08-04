@@ -30,8 +30,8 @@ const initialState: IBookState = {
   books: [
     { name: 'react', id: 1, sellout: false },
     { name: 'angular', id: 2, sellout: true },
-    { name: 'rxjs', id: 3, sellout: false }
-  ]
+    { name: 'rxjs', id: 3, sellout: false },
+  ],
 };
 
 function bookReducer(state: IBookState = initialState, action?: IAction<IUpdateBookSelllFieldPayload>): IBookState {
@@ -49,18 +49,18 @@ function bookReducer(state: IBookState = initialState, action?: IAction<IUpdateB
                     return { ...book, sellout };
                   }
                   return book;
-                }
+                },
               );
-            }
-          }
+            },
+          },
         });
         return nState;
 
       case UPDATE_BOOK_SELLOUT_FIELD_V2:
         nState = update(state, {
           books: {
-            $updateObjFieldFromArrayById: { id: action.payload.id, key: 'sellout', value: action.payload.sellout }
-          }
+            $updateObjFieldFromArrayById: { id: action.payload.id, key: 'sellout', value: action.payload.sellout },
+          },
         } as any);
         return nState;
       default:
@@ -70,17 +70,18 @@ function bookReducer(state: IBookState = initialState, action?: IAction<IUpdateB
     return state;
   }
 }
-
-// update.extend<IBook[]>('$updateObjFieldFromArrayById', function handler(param, old: IBook[]): IBook[] {
-//   return old.map(
-//     (book: IBook): IBook => {
-//       if (book.id === param.id) {
-//         return update(book, { $merge: { [param.key]: param.value } });
-//       }
-//       return book;
-//     }
-//   );
-// });
+// TODO: make the type correct
+// @ts-ignore
+update.extend<IBook[]>('$updateObjFieldFromArrayById', function handler(param, old: IBook[]): IBook[] {
+  return old.map(
+    (book: IBook): IBook => {
+      if (book.id === param.id) {
+        return update(book, { $merge: { [param.key]: param.value } });
+      }
+      return book;
+    },
+  );
+});
 
 export {
   bookReducer,
@@ -91,5 +92,5 @@ export {
   IUpdateBookSelllFieldPayload,
   UPDATE_BOOK_SELLOUT_FIELD,
   UPDATE_BOOK_SELLOUT_FIELD_V2,
-  initialState
+  initialState,
 };

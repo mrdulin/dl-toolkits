@@ -5,10 +5,12 @@ function decoratorFactory(...parameters: string[]): DecoratorFunction<PropertyDe
     const originalMethod = descriptor.value;
     let ret: any;
 
-    descriptor.value = function (...args: any[]): any {
+    descriptor.value = function inner(...args: any[]): any {
       const passed: boolean = args.every((arg: any) => arg === undefined);
 
-      if (!passed) return;
+      if (!passed) {
+        return;
+      }
 
       ret = originalMethod.apply(this, args);
       return ret;

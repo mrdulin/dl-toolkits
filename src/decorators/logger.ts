@@ -1,6 +1,3 @@
-/**
- * Created by dulin on 2017/7/10.
- */
 import { DecoratorFunction } from '../types';
 
 type LogMode = 'args' | 'count';
@@ -11,7 +8,7 @@ function LogFactory(mode: LogMode = 'args'): DecoratorFunction<PropertyDescripto
 
     const componentClassName: string = target.constructor.displayName || target.constructor.name;
 
-    descriptor.value = function (...args: any[]): any {
+    descriptor.value = function inner(...args: any[]): any {
       const result: any = originalMethod.apply(this, args);
 
       if (process.env.NODE_ENV !== 'production') {
