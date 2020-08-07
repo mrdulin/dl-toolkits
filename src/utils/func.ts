@@ -23,13 +23,23 @@ function partial(fn: AnyFunc, ...args: any[]): AnyFunc {
  * @returns {AnyFunc}
  */
 function curry(fn: AnyFunc): AnyFunc {
-  return function inner(this: void) {
-    if (arguments.length === 0) {
+  return function inner(this: void, ...args: any[]) {
+    if (args.length === 0) {
       return inner;
     } else {
-      return fn.apply(this, arguments);
+      return (...args2: any[]) => fn.apply(this, args.concat(args2));
     }
   };
 }
 
-export { partial, curry };
+function getFuncName(func: AnyFunc): string {
+  if (func.name) {
+    return func.name;
+  }
+  let ret = func.toString();
+  ret = ret.substr('function '.length);
+  ret = ret.substr(0, ret.indexOf('('));
+  return ret;
+}
+
+export { partial, curry, getFuncName };

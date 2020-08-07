@@ -1,5 +1,4 @@
-import { partial } from '../../utils/func';
-import { curry } from 'lodash';
+import { partial, curry, getFuncName } from '../../utils/func';
 
 describe('func', () => {
   describe('#partial', () => {
@@ -19,6 +18,15 @@ describe('func', () => {
       const fn = curry(add);
       const actual = fn(1)(2);
       expect(actual).toBe(3);
+    });
+  });
+  describe('#getFuncName', () => {
+    it('should get func name', () => {
+      function testFunction() {
+        return;
+      }
+      const actual = getFuncName(testFunction);
+      expect(actual).toBe('testFunction');
     });
   });
 });
