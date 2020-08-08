@@ -4,6 +4,8 @@ interface IkeyOfObject {
   [propName: string]: any;
 }
 
+type ClassType<T> = new () => T;
+
 /**
  * pick method signature type from an interface
  */
@@ -11,4 +13,4 @@ type PickMethod<T, MethodName extends keyof T> = T[MethodName] extends (...args:
   ? (...args: Parameters<T[MethodName]>) => ReturnType<T[MethodName]>
   : never;
 
-export { DecoratorFunction, IkeyOfObject, PickMethod };
+export { DecoratorFunction, IkeyOfObject, PickMethod, ClassType };

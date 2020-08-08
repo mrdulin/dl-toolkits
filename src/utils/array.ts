@@ -132,7 +132,12 @@ function findFirstSameElement(a: BaseType[], b: BaseType[]): BaseType {
   return el;
 }
 
+function flatten(arr: any[]) {
+  return arr.reduce((a, b) => a.concat(Array.isArray(b) ? flatten(b) : b), []);
+}
+
 export {
+  flatten,
   diff,
   diff2,
   removeDup,

@@ -10,6 +10,7 @@ import {
   elementCount,
   quickSort,
   findFirstSameElement,
+  flatten,
 } from '../../utils/array';
 
 describe('array', () => {
@@ -208,6 +209,49 @@ describe('array', () => {
       const b = [3, 4, 5];
       const actual = findFirstSameElement(a, b);
       expect(actual).toEqual(3);
+    });
+  });
+
+  describe('#flatten', () => {
+    it('should flat array', () => {
+      const arr = [[1, 2], [[4]], [{ a: 1 }]];
+      const actual = flatten(arr);
+      expect(actual).toEqual([1, 2, 4, { a: 1 }]);
+    });
+
+    it('二维数组应该被扁平化成一维数组', () => {
+      const arr = [
+        [1, 2],
+        [3, 4],
+      ];
+      const result = [1, 2, 3, 4];
+      expect(flatten(arr)).toEqual(result);
+    });
+
+    it('三维数组', () => {
+      const arr = [
+        [1, 2, 3],
+        [3, 4, [5]],
+      ];
+      const result = [1, 2, 3, 3, 4, 5];
+      expect(flatten(arr)).toEqual(result);
+    });
+
+    it('三维以上数组', () => {
+      const arr = [
+        1,
+        [2, 3],
+        [4, 5],
+        [[6]],
+        [
+          [
+            [6, 8],
+            [10, 11],
+          ],
+        ],
+      ];
+      const result = [1, 2, 3, 4, 5, 6, 6, 8, 10, 11];
+      expect(flatten(arr)).toEqual(result);
     });
   });
 });

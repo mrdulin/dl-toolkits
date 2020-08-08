@@ -7,3 +7,4 @@ export * from './func';
 export * from './immutability';
 export * from './obj';
 export * from './promise';
+export * from './cls';
