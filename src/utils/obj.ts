@@ -48,4 +48,25 @@ function deepMerge(target: object, source: object) {
   return result;
 }
 
-export { getValueByPath, deepMerge };
+/**
+ * 只克隆array和object
+ *
+ * @author dulin
+ * @template T
+ * @param {T} o
+ * @returns {T}
+ */
+function deepCopy<T>(o: T): T;
+function deepCopy<T>(o: T[]): T[];
+function deepCopy(o: any): any {
+  const out = Array.isArray(o) ? [] : {};
+  for (const key in o) {
+    if (o.hasOwnProperty(key)) {
+      const v = o[key];
+      out[key] = typeof v === 'object' ? deepCopy(v) : v;
+    }
+  }
+  return out;
+}
+
+export { getValueByPath, deepMerge, deepCopy };

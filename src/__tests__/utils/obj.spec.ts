@@ -1,4 +1,4 @@
-import { getValueByPath, deepMerge } from '../../utils/obj';
+import { getValueByPath, deepMerge, deepCopy } from '../../utils/obj';
 
 describe('obj', () => {
   describe('#getValueByPath', () => {
@@ -72,6 +72,33 @@ describe('obj', () => {
       const target = { a: { b: { c: { name: 'cat' }, d: 1 } } };
       const source = { a: { b: { name: 'dog' } } };
       expect(deepMerge(target, source)).toEqual({ a: { b: { name: 'dog', c: { name: 'cat' }, d: 1 } } });
+    });
+  });
+
+  describe('#deepCopy', () => {
+    it('should deep copy mixed array', () => {
+      const a: [number, number, number, { name: string }] = [1, 2, 3, { name: 'novaline' }];
+      const actual = deepCopy(a);
+
+      expect(actual).toEqual([1, 2, 3, { name: 'novaline' }]);
+      expect(a).not.toBe(actual);
+
+      actual[3].name = 'emilie';
+      expect(actual).toEqual([1, 2, 3, { name: 'emilie' }]);
+      expect(a).toEqual([1, 2, 3, { name: 'novaline' }]);
+
+      a[3].name = 'I like her';
+      expect(a).toEqual([1, 2, 3, { name: 'I like her' }]);
+      expect(actual).toEqual([1, 2, 3, { name: 'emilie' }]);
+    });
+
+    it('should deep copy function', () => {
+      // tslint:disable-next-line: no-empty
+      const a: [{ b: () => void }] = [{ b() {} }];
+      const actual = deepCopy(a);
+      expect(actual).not.toBe(a);
+      expect(actual[0]).not.toBe(a[0]);
+      expect(actual[0].b).toBe(a[0].b);
     });
   });
 });
