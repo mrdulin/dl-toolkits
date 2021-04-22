@@ -1,3 +1,20 @@
+// Q：Why I want to write this script？
+// A: I often read articles on dev.to site, dev.to provides three buttons, namely like, unicorn and readinglist. But I want a button to indicate whether the current article has been read, similar to the read function of mailing lists and RSS.
+
+// ==UserScript==
+// @name         Mark post read on dev.to
+// @namespace    http://tampermonkey.net/
+// @version      0.1
+// @description  Mark post read on dev.to.
+// @author       Du Lin
+// @match        https://dev.to/*
+// @grant        none
+// @require      https://cdnjs.cloudflare.com/ajax/libs/localforage/1.9.0/localforage.min.js
+// ==/UserScript==
+
+// For local development, add below to UserScript section
+// @require      file:///Users/dulin/workspace/github.com/mrdulin/dl-toolkits/scripts/mark-post-read-on-devto.js
+
 (function () {
   const buttonTexts = {
     unread: 'Mark As Read',
@@ -7,12 +24,14 @@
   function bindEvent() {
     const widget = document.querySelector('#marked-as-read-menu');
     const readButton = document.querySelector('#marked-as-read-button');
-    const exportDataButton = document.querySelector('#marked-as-read-export-button');
+    const exportButton = document.querySelector('#marked-as-read-export-button');
     const closeMenuButton = document.querySelector('#marked-as-read-close-button');
+    const exportReadListCloseButton = document.querySelector('#marked-as-read-export-read-list-close-button');
     readButton.addEventListener('click', onReadButtonClick, false);
     widget.addEventListener('click', onWidgetClick, false);
-    exportDataButton.addEventListener('click', onExportDataButtonClick, false);
+    exportButton.addEventListener('click', onExportButtonClick, false);
     closeMenuButton.addEventListener('click', onCloseMenuButtonClick, false);
+    exportReadListCloseButton.addEventListener('click', onExportReadListCloseButtonClick, false);
   }
 
   async function initStorage() {
@@ -39,10 +58,18 @@
     return button;
   }
 
-  function createExportDataButton() {
+  function createExportButton() {
     const button = document.createElement('button');
     button.id = 'marked-as-read-export-button';
-    button.textContent = 'Export Read List';
+    button.textContent = 'export';
+    button.style.marginRight = '10px';
+    return button;
+  }
+
+  function createImportButton() {
+    const button = document.createElement('button');
+    button.id = 'marked-as-read-import-button';
+    button.textContent = 'import';
     button.style.marginRight = '10px';
     return button;
   }
@@ -50,13 +77,14 @@
   function createCloseMenuButton() {
     const button = document.createElement('button');
     button.id = 'marked-as-read-close-button';
-    button.textContent = 'Close';
+    button.textContent = 'close';
     return button;
   }
 
-  function createReadList() {
+  function createExportReadList() {
     const div = document.createElement('div');
     const title = document.createElement('p');
+    const closeButton = document.createElement('button');
     title.textContent = 'Export Read list';
     title.style.marginBottom = '10px';
 
@@ -68,8 +96,12 @@
     textarea.id = 'marked-as-read-export-list';
     textarea.style.cssText = 'font-size: 14px; resize: none; width: 100%; height: 500px;';
 
+    closeButton.id = 'marked-as-read-export-read-list-close-button';
+    closeButton.textContent = 'close';
+
     div.appendChild(title);
     div.appendChild(textarea);
+    div.appendChild(closeButton);
     return div;
   }
 
@@ -81,9 +113,10 @@
     const widget = document.createElement('div');
     const panel = document.createElement('div');
     const widgetHeader = document.createElement('p');
-    const exportDataButton = createExportDataButton();
+    const exportButton = createExportButton();
+    const importButton = createImportButton();
     const closeMenuButton = createCloseMenuButton();
-    const readList = createReadList();
+    const exportReadList = createExportReadList();
 
     widget.id = 'marked-as-read-menu';
     widget.style.cssText = [
@@ -103,12 +136,13 @@
     panel.id = 'marked-as-read-menu-panel';
     panel.style.cssText = 'display: none;';
 
-    panel.appendChild(exportDataButton);
+    panel.appendChild(exportButton);
+    panel.appendChild(importButton);
     panel.appendChild(closeMenuButton);
     widget.appendChild(panel);
     widget.prepend(widgetHeader);
     pageContent.appendChild(widget);
-    pageContent.appendChild(readList);
+    pageContent.appendChild(exportReadList);
     buttonContainer.prepend(readButton);
 
     return widget;
@@ -121,7 +155,13 @@
     widget.style.transform = 'none';
   }
 
-  async function onExportDataButtonClick(e) {
+  function onExportReadListCloseButtonClick(e) {
+    e.stopPropagation();
+    const readlistWidget = document.querySelector('#marked-as-read-export-list-container');
+    readlistWidget.style.display = 'none';
+  }
+
+  async function onExportButtonClick(e) {
     e.stopPropagation();
     const readlistWidget = document.querySelector('#marked-as-read-export-list-container');
     const readList = document.querySelector('#marked-as-read-export-list');
