@@ -16,3 +16,5 @@ export type PickMethod<T, MethodName extends keyof T> = T[MethodName] extends (.
 export type Optional<T, K extends keyof T> = Pick<Partial<T>, K> & Omit<T, K>;
 
 export type MakeRequired<T extends object, Prop extends keyof T> = Omit<T, Prop> & Record<Prop, Required<T[Prop]>>;
+
+export type Flatten<T> = T extends Array<infer Z> ? Flatten<Z> : T;

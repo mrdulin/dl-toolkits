@@ -1,4 +1,4 @@
-import { DecoratorFunction } from '../types';
+import { DecoratorFunction } from '../utils/type-helpers';
 
 type LogMode = 'args' | 'count';
 

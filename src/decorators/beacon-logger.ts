@@ -1,4 +1,4 @@
-import { DecoratorFunction, IkeyOfObject } from '../types';
+import { DecoratorFunction, IkeyOfObject } from '../utils/type-helpers';
 
 type LogMethod<T> = (...args: T[]) => T;
 

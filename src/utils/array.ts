@@ -1,3 +1,5 @@
+import { Flatten } from './type-helpers';
+
 type BaseType = string | number | boolean | null | undefined;
 
 function diff(a1: BaseType[], a2: BaseType[]): BaseType[] {
@@ -132,7 +134,7 @@ function findFirstSameElement(a: BaseType[], b: BaseType[]): BaseType {
   return el;
 }
 
-function flatten(arr: any[]) {
+function flatten<T extends any[]>(arr: T): Flatten<T> {
   return arr.reduce((a, b) => a.concat(Array.isArray(b) ? flatten(b) : b), []);
 }
 
