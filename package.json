@@ -29,7 +29,7 @@
     "typescript": "^3.4.5"
   },
   "scripts": {
-    "test": "jest --detectOpenHandles",
+    "test": "jest",
     "clean": "rm -rf ./dist",
     "prebuild": "npm run clean",
     "build": "tsc",
