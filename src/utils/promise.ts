@@ -1,6 +1,6 @@
-type AnyAsyncFunc<T> = (...args: any[]) => Promise<T>;
+import { AnyAsyncFunc } from './type-helpers';
 
-async function allSequence<T>(tasks: Array<AnyAsyncFunc<T>>): Promise<T[]> {
+async function allSequence<T>(tasks: AnyAsyncFunc<T>[]): Promise<T[]> {
   const r: T[] = [];
   for (const t of tasks) {
     r.push(await t());
@@ -18,15 +18,11 @@ async function allMap<T>(
 }
 
 /**
- *
  * equivalent to Promise.all
- *
- * @author dulin
- * @template T
- * @param {Array<Promise<T>>} ps
- * @returns {Promise<T[]>}
+ * @param ps
+ * @returns
  */
-async function all<T>(ps: Array<Promise<T>>): Promise<T[]> {
+async function all<T>(ps: Promise<T>[]): Promise<T[]> {
   return new Promise((resolve, reject) => {
     let count = 0;
     const values: T[] = [];
@@ -58,7 +54,7 @@ interface IPromiseWithFallback<T, F = any> {
  * @param {Array<IPromiseWithFallback<T>>} ps
  * @returns
  */
-async function allSettled<T>(ps: Array<IPromiseWithFallback<T>>) {
+async function allSettled<T>(ps: IPromiseWithFallback<T>[]) {
   return Promise.all(ps.map((p: IPromiseWithFallback<T>) => p.p.catch((_) => p.fallback)));
 }
 
