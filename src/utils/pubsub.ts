@@ -1,13 +1,11 @@
-import { AnyFunction } from '..';
+import { NotFunc, AnyFunction } from './type-helpers';
 
 let lastUid = -1;
 let subscribers: Record<TopicKey, Record<SubscribeToken, Subscriber>> = {};
 
-type NotFunc<T> = Exclude<T, AnyFunction>;
-type TopicKey = string;
-
-type Subscriber = (data: any) => void;
-type SubscribeToken = string;
+export type TopicKey = string;
+export type Subscriber = AnyFunction;
+export type SubscribeToken = string;
 /**
  * subscribers = {
  *    [topicKey1]: {
@@ -27,7 +25,7 @@ export const Pubsub = {
     return token;
   },
 
-  unsubscribe: (token: SubscribeToken) => {
+  unsubscribe: (token: SubscribeToken): void => {
     for (const topicKey in subscribers) {
       if (subscribers.hasOwnProperty(topicKey)) {
         const subscriptions = subscribers[topicKey];
@@ -39,7 +37,7 @@ export const Pubsub = {
     }
   },
 
-  publish: (topicKey: TopicKey, data: NotFunc<any>) => {
+  publish: (topicKey: TopicKey, data: NotFunc<any>): void => {
     if (subscribers[topicKey]) {
       const subscription = subscribers[topicKey];
       for (const subscriber of Object.values<Subscriber>(subscription)) {
@@ -48,7 +46,7 @@ export const Pubsub = {
     }
   },
 
-  countSubscriptions: (topicKey: TopicKey) => {
+  countSubscriptions: (topicKey: TopicKey): number => {
     for (const tk in subscribers) {
       if (subscribers.hasOwnProperty(topicKey) && tk === topicKey) {
         return Object.keys(subscribers[tk]).length;
@@ -57,7 +55,7 @@ export const Pubsub = {
     return 0;
   },
 
-  clearAllSubscriptions: () => {
+  clearAllSubscriptions: (): void => {
     subscribers = {};
   },
 };

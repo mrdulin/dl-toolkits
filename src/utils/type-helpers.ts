@@ -21,3 +21,5 @@ export type Flatten<T> = T extends (infer Z)[] ? Flatten<Z> : T;
 
 export type AnyFunction = (...args: any) => any;
 export type AnyAsyncFunc<T = any> = (...args: any) => Promise<T>;
+
+export type NotFunc<T> = Exclude<T, AnyFunction>;
