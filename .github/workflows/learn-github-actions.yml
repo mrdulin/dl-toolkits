@@ -10,3 +10,11 @@ jobs:
           node-version: '14'
       - run: npm install -g bats
       - run: bats -v
+  learn-storing-secrets:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Retrieve secret
+        env:
+          testpass: ${{ secrets.TESTPASS }}
+        run: |
+          echo: "$testpass"
