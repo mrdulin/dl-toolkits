@@ -17,4 +17,4 @@ jobs:
         env:
           testpass: ${{ secrets.TESTPASS }}
         run: |
-          echo: "$testpass"
+          echo "$testpass"
