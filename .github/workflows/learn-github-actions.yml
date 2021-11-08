@@ -16,6 +16,4 @@ jobs:
       - name: Retrieve secret
         env:
           testpass: ${{ secrets.TESTPASS }}
-        shell: bash
-        run: |
-          echo "$testpass"
+        run: echo "$testpass"
