@@ -4,4 +4,7 @@ module.exports = {
   setupFilesAfterEnv: ['./jest.setup.js'],
   testMatch: ['**/?(*.)+(spec|test).[jt]s?(x)'],
   verbose: true,
+  transform: {
+    '^.+\\.tsx?$': 'esbuild-jest',
+  },
 };
